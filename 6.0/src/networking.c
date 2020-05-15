@@ -234,7 +234,12 @@ int prepareClientToWrite(client *c) {
 
     /* Schedule the client to write the output buffers to the socket, unless
      * it should already be setup to do so (it has already pending data). */
-    if (!clientHasPendingReplies(c)) clientInstallWriteHandler(c);
+    if (!clientHasPendingReplies(c)) {
+        serverLog(LL_WARNING, "client#%llu有要返回的", c->id);
+        clientInstallWriteHandler(c);
+    } else {
+        serverLog(LL_WARNING, "client#%llu没有要返回的", c->id);
+    }
 
     /* Authorize the caller to queue in the output buffer of this client. */
     return C_OK;

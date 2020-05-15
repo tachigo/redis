@@ -5097,7 +5097,7 @@ int main(int argc, char **argv) {
             }
         }
         if (server.ipfd_count > 0 || server.tlsfd_count > 0)
-            serverLog(LL_NOTICE,"Ready to accept connections");
+            serverLog(LL_NOTICE,"Ready to accept connections, server.ipfd_count=%d, server.tlsfd_count=%d", server.ipfd_count, server.tlsfd_count);
         if (server.sofd > 0)
             serverLog(LL_NOTICE,"The server is now ready to accept connections at %s", server.unixsocket);
         if (server.supervised_mode == SUPERVISED_SYSTEMD) {

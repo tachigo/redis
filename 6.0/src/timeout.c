@@ -63,7 +63,6 @@ int clientsCronHandleTimeout(client *c, mstime_t now_ms) {
         !(c->flags & CLIENT_PUBSUB) &&  /* No timeout for Pub/Sub clients */
         (now - c->lastinteraction > server.maxidletime))
     {
-        serverLog(LL_VERBOSE,"Closing idle client");
         freeClient(c);
         return 1;
     } else if (c->flags & CLIENT_BLOCKED) {
