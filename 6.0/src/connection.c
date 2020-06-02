@@ -92,6 +92,7 @@ connection *connCreateAcceptedSocket(int fd) {
     connection *conn = connCreateSocket();
     conn->fd = fd;
     conn->state = CONN_STATE_ACCEPTING;
+    serverLog(LL_WARNING, "创建一个connection#%d", conn->fd);
     return conn;
 }
 
@@ -142,6 +143,7 @@ void *connGetPrivateData(connection *conn) {
 
 /* Close the connection and free resources. */
 static void connSocketClose(connection *conn) {
+    int connfd = conn->fd;
     if (conn->fd != -1) {
         aeDeleteFileEvent(server.el,conn->fd,AE_READABLE);
         aeDeleteFileEvent(server.el,conn->fd,AE_WRITABLE);
@@ -156,7 +158,7 @@ static void connSocketClose(connection *conn) {
         conn->flags |= CONN_FLAG_CLOSE_SCHEDULED;
         return;
     }
-
+    serverLog(LL_WARNING, "销毁connection#%d", connfd);
     zfree(conn);
 }
 

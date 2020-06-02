@@ -166,6 +166,8 @@ client *createClient(connection *conn) {
     listSetMatchMethod(c->pubsub_patterns,listMatchObjects);
     if (conn) linkClient(c);
     initClientMultiState(c);
+    serverLog(LL_WARNING, "创建client#%llu", c->id);
+
     return c;
 }
 
@@ -1178,6 +1180,7 @@ void freeClient(client *c) {
     zfree(c->argv);
     freeClientMultiState(c);
     sdsfree(c->peerid);
+    serverLog(LL_WARNING, "销毁client#%llu", c->id);
     zfree(c);
 }
 
